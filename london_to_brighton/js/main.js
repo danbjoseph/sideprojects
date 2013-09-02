@@ -3,7 +3,7 @@ var pathArray = [];
 
 
 var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-var mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | &copy; <a href="http://danbjoseph.github.io/geo" title="Dan Joseph" target="_blank">Dan Joseph</a> 2013';
+var mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>';
 
 var map = L.map('map', {   
     zoom: 14,
@@ -17,10 +17,6 @@ L.tileLayer(osmUrl, {
     maxZoom: 18
 }).addTo(map);
 
-var railStyle = {
-    "color": "red",
-    "weight": 5
-}
 
 // beginning of function chain to initialize map
 function getPath() {
@@ -38,12 +34,11 @@ function getPath() {
                 pathArray.push([b,a]);
             })
             railpath = L.polyline(pathArray, {
-                style: railStyle
+                color: 'red'
             }).addTo(map);
             mapbounds = railpath.getBounds();
             map.fitBounds(mapbounds);
-            movingdot();
- 
+            addAnimatedMarker(); 
         },
         error: function(e) {
             console.log(e);
@@ -51,21 +46,48 @@ function getPath() {
     });
 }
 
-function movingdot(){
-    
+function addAnimatedMarker(){    
     animatedMarker = L.animatedMarker(railpath.getLatLngs(), {
         distance: 414,
         interval: 1000,
+        autoStart: false
     });
     map.addLayer(animatedMarker);
-
 }
 
+// this code loads the IFrame Player API code asynchronously
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+// This function creates an <iframe> (and YouTube player)
+// after the API code downloads.
+var player;
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: 'tGTwSNPqAqs',
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange,
+        }
+    });
+}
 
+// the API will call this function when the video player is ready.
+function onPlayerReady(event) {
+    // event.target.playVideo();
+}
 
-
-
+function onPlayerStateChange() {
+    if (player.getPlayerState() == 1){
+        animatedMarker.start();
+    } else {
+        animatedMarker.stop();
+    }
+}
 
 
 // tweet popup
