@@ -6,10 +6,10 @@ var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>';
 
 var map = L.map('map', {   
-    zoom: 14,
-    center: [51.505, -0.09],
-    // scrollWheelZoom: false, 
-    // zoomControl: false,   
+    zoom: 8,
+    center: [51.316880, -0.005493],
+    scrollWheelZoom: false, 
+    zoomControl: false,   
 });
 
 L.tileLayer(osmUrl, {
@@ -34,11 +34,11 @@ function getPath() {
                 pathArray.push([b,a]);
             })
             railpath = L.polyline(pathArray, {
-                color: 'red'
-            }).addTo(map);
-            mapbounds = railpath.getBounds();
-            map.fitBounds(mapbounds);
-            addAnimatedMarker(); 
+                color: 'grey',
+                // stroke: false,
+                clickable: false
+            }).addTo(map);            
+            
         },
         error: function(e) {
             console.log(e);
@@ -46,11 +46,19 @@ function getPath() {
     });
 }
 
+var myIcon = L.icon({
+    iconUrl: '../img/train.png',
+    iconSize: [25, 31],
+    iconAnchor: [12, 15]
+});
+
 function addAnimatedMarker(){    
+    
     animatedMarker = L.animatedMarker(railpath.getLatLngs(), {
         distance: 414,
         interval: 1000,
-        autoStart: false
+        autoStart: false,
+        icon: myIcon
     });
     map.addLayer(animatedMarker);
 }
@@ -69,6 +77,10 @@ function onYouTubeIframeAPIReady() {
         height: '390',
         width: '640',
         videoId: 'tGTwSNPqAqs',
+        playerVars: {
+            controls: '0',
+            disablekb: '1'            
+        },        
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange,
@@ -76,27 +88,98 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-// the API will call this function when the video player is ready.
+var videotime = 0;
+var timeupdater = null; 
+var timedisplay = document.getElementById('time');
+var tripStarted = false;
+var tripReady = false;
+var tripEnded = false;
+var markerLocation = [];
+
 function onPlayerReady(event) {
-    // event.target.playVideo();
+    function updateTime() {
+        var oldTime = videotime;
+        if(player && player.getCurrentTime) {
+          videotime = player.getCurrentTime();
+        }
+        if(videotime !== oldTime) {
+          onProgress();
+        }
+    }
+    timeupdater = setInterval(updateTime, 100);
 }
 
-function onPlayerStateChange() {
-    if (player.getPlayerState() == 1){
+function onProgress() { 
+    if (videotime >= 21 && tripReady ==! true){
+        addAnimatedMarker();
+        markerLocation = animatedMarker.getLatLng();
+        map.panTo(markerLocation);
+        map.setZoom(11);        
+        tripReady = true;
+      }
+    if (videotime >= 30 && tripStarted ==! true){
         animatedMarker.start();
-    } else {
+        tripStarted = true;
+    }
+    if (tripStarted === true && tripEnded === false && player.getPlayerState() === 1 ){
+        markerLocation = animatedMarker.getLatLng();
+        map.panTo(markerLocation);
+    }
+    if (videotime >= 234 && tripEnded ==! true){
+        map.removeLayer(animatedMarker);
+        map.setZoom(13)
+        tripEnded = true;
+    } 
+}
+
+function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING && tripStarted == true){
+        animatedMarker.start();
+    }
+    if(event.data != 1 && tripStarted == true && tripEnded == false) {
         animatedMarker.stop();
     }
 }
 
+function playVideo(){
+    player.playVideo();
+}
+
+function pauseVideo(){
+    player.pauseVideo();
+}
+
+function muteVideo(){
+    player.mute();
+}
+
+function volumeUp(){
+    player.unMute();
+    volume = player.getVolume();
+    if (volume != 100){
+        volume += 10;
+        player.setVolume(volume);
+    }
+}
+
+function volumeDown(){
+    player.unMute();
+    volume = player.getVolume();
+    if (volume != 0){
+        volume -= 10;
+        player.setVolume(volume);
+    }
+}
+
+
 
 // tweet popup
 $('.twitterpopup').click(function(event) {
-    var width  = 575,
-        height = 400,
+    var width  = 550,
+        height = 420,
         left   = ($(window).width()  - width)  / 2,
         top    = ($(window).height() - height) / 2,
-        url    = this.href,
+        url    = "http://twitter.com/intent/tweet?url=http%3A%2F%2Fbit.ly%2F15toUyb&via=danbjoseph&related=LeafletJS,twbootstrap",
         opts   = 'status=1' +
                  ',width='  + width  +
                  ',height=' + height +

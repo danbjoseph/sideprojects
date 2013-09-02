@@ -28,28 +28,34 @@
       <div class="navbar-inner">
         <div>
           <a class="navbar-brand" href="../index.html">London to Brighton</a>
-        </div>
+        </div> 
       </div>      
     </div>    
           
-<!--     <div class="twitter">
-      <a class="twitter twitterpopup" href="http://twitter.com/intent/tweet?text=awesome%20%40RedCross%20mapfolio&amp;url=http%3A%2F%2Fbit.ly%2F19V54xv&amp;related=RedCross"><span></span></a>
-    </div>   
-    <div class="facebook">
-      <a href="#" 
-      onclick="
-      window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href), 
-      'facebook-share-dialog', 
-      'width=626,height=436'); 
-      return false;"><span></span></a>
-    </div>    -->   
-      <div class="col-md-6">
-        <div id="map"></div>
-      </div>
-      <div class="col-md-6">
-        <div id="player"></div>
-        <div id="time"></div>    
+       
+    
+      <div class="container" style="text-align:center;">
+        <div id="map"></div>      
+        <div id="player"></div>                
+        <div id="playerControls">
+          <button type="button" class="btn btn-default btn-sm" onclick="playVideo()">
+            <span class="glyphicon glyphicon-play"></span>
+          </button> 
+          <button type="button" class="btn btn-default btn-sm" onclick="pauseVideo()">
+            <span class="glyphicon glyphicon-pause"></span>
+          </button>   
+          <button type="button" class="btn btn-default btn-sm" onclick="muteVideo()">
+            <span class="glyphicon glyphicon-volume-off"></span>
+          </button> 
+          <button type="button" class="btn btn-default btn-sm" onclick="volumeDown()">
+            <span class="glyphicon glyphicon-volume-down"></span>
+          </button>   
+          <button type="button" class="btn btn-default btn-sm" onclick="volumeUp()">
+            <span class="glyphicon glyphicon-volume-up"></span>
+          </button>
+          <button type="button" class="btn btn-default btn-sm twitterpopup twitter" style="padding:0; height:30px; width:34px;"><span></span></button>
+          </div>          
+        
       </div>
 
 
