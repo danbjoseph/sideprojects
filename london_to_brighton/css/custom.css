@@ -1,0 +1,91 @@
+@media (max-width: 980px) {
+  /* Enable use of floated navbar text */
+  .navbar-text.pull-right {
+    float: none;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+body{
+  padding-top: 50px;
+  margin: 0;
+}
+
+.navbar {
+  height: 50px;
+}
+
+.navbar-brand {
+  max-width: none;
+}
+
+#map {
+  width: 500px;
+  height: 500px;   
+}
+
+a.leaflet-control-zoom-in, 
+a.leaflet-control-zoom-out {
+  color:#6d6e70;
+}
+
+
+.twitter span {
+  position: absolute;
+  left: 10px;
+  top:124px;
+  z-index: 1002;
+  box-shadow: 1px 1px 9px #c3c3c5;
+  border-radius: 5px;
+  border:1px solid #d7d7d8;
+  background: url("../img/twitter_gray.png");
+  background-repeat: no-repeat;
+  height: 28px;
+  width: 28px;    
+}
+
+.twitter a:hover span {
+  background: url("../img/twitter_color.png");
+  background-repeat: no-repeat;  
+}
+
+.facebook span {
+  position: absolute;
+  left: 10px;
+  top: 158px;
+  z-index: 1003;
+  box-shadow: 1px 1px 9px #c3c3c5;
+  border-radius: 5px;
+  border:1px solid #d7d7d8;
+  background: url("../img/fb_gray.png");
+  background-repeat: no-repeat;
+  height: 28px;
+  width: 28px;
+  
+}
+
+.facebook a:hover span {
+  background: url("../img/fb_color.png");
+  background-repeat: no-repeat;  
+}
+
+
+.btn-extent {
+  background-color: #C4DFF6;
+  margin-bottom: 5px;
+}
+.btn-extent:hover,
+.btn-extent:focus {
+  background-color: #56A0D3;  
+}
+
+.btn-sector{
+  background-color: #8ec06c;
+  margin-bottom: 5px;
+}
+.btn-sector:hover,
+.btn-sector:focus {
+  background-color: #537b35;  
+}
+
