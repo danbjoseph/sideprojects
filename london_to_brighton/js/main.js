@@ -47,7 +47,7 @@ function getPath() {
 }
 
 var myIcon = L.icon({
-    iconUrl: '../img/train.png',
+    iconUrl: 'https://raw.github.com/danbjoseph/sideprojects/master/london_to_brighton/img/train.png',
     iconSize: [25, 31],
     iconAnchor: [12, 15]
 });
