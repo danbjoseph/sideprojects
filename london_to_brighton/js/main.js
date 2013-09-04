@@ -78,7 +78,7 @@ function onYouTubeIframeAPIReady() {
         width: '640',
         videoId: 'tGTwSNPqAqs',
         playerVars: {
-            controls: '0',
+            // controls: '0',
             disablekb: '1'            
         },        
         events: {
@@ -109,7 +109,10 @@ function onPlayerReady(event) {
     timeupdater = setInterval(updateTime, 100);
 }
 
+vidTimeHolder = document.getElementById('vidTime');
+
 function onProgress() { 
+    vidTimeHolder.innerHTML = videotime;
     if (videotime >= 21 && tripReady ==! true){
         addAnimatedMarker();
         markerLocation = animatedMarker.getLatLng();
@@ -132,6 +135,16 @@ function onProgress() {
     } 
 }
 
+// 29-30    Start   29
+// 1:45-47  Tunnel  105
+// 1:54-55  Tunnel  114
+// 2:29-31  Tunnel  149
+// 2:42-43  Bridge? 162
+// 2:53-54  Tunnel  173
+// 3:20-25  Tunnel  200
+// 3:35-36  Tunnel  215
+// 3:48     End     228
+ 
 function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING && tripStarted == true){
         animatedMarker.start();
