@@ -113,7 +113,7 @@ function onPlayerReady(event) {
 vidTimeHolder = document.getElementById('vidTime');
 
 function onProgress() { 
-    vidTimeHolder.innerHTML = videotime;
+    // vidTimeHolder.innerHTML = videotime;
     if (videotime >= 21 && tripReady ==! true){
         addAnimatedMarker();
         markerLocation = animatedMarker.getLatLng();
