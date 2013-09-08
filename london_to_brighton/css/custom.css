@@ -10,21 +10,38 @@
 body{
   padding-top: 60px;
   margin: 0;
+  background-color: #6f6f6f;
 }
 
-.navbar {
-  height: 50px;
+.row {
+  margin: 0;
+}
+
+.text-block {
+  margin-top: 10px;
+  background-color: #d4d4d4;
+  padding: 20px;
+  border-radius: 5px;
 }
 
 .navbar-brand {
   max-width: none;
 }
 
+.text-block a {
+  
+}
+
+#playerControls {
+  margin: 5px;
+}
+
 #map {
-  width: 640px;
-  height: 390px;
+  width: 100%;
+  max-width: 640px;
+  height: 355px;
   margin-left: auto;
-  margin-right: auto;   
+  margin-right: auto;
 }
 
 a.leaflet-control-zoom-in, 

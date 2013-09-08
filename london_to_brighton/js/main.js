@@ -79,7 +79,8 @@ function onYouTubeIframeAPIReady() {
         videoId: 'tGTwSNPqAqs',
         playerVars: {
             controls: '0',
-            disablekb: '1'            
+            disablekb: '1',
+            rel: '0'            
         },        
         events: {
             'onReady': onPlayerReady,

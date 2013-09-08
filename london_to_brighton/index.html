@@ -21,23 +21,14 @@
   </head>
   
 
-  <body>
-
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div>
-          <a class="navbar-brand" href="../index.html">London to Brighton</a>
-        </div> 
-      </div>      
-    </div>    
-          
+  <body>       
        
     
-      <div class="container" style="text-align:center;">
-        <div id="map"></div>      
-        <div id="player"></div>                
-        <div id="playerControls">
+      <div class="container">
+        <div class="row" style="text-align:center;">
+        <div class="col-md-4">
+          <div id="map"></div>
+          <div id="playerControls">
           <button type="button" class="btn btn-default btn-sm" onclick="playVideo()">
             <span class="glyphicon glyphicon-play"></span>
           </button> 
@@ -53,8 +44,32 @@
           <button type="button" class="btn btn-default btn-sm" onclick="volumeUp()">
             <span class="glyphicon glyphicon-volume-up"></span>
           </button>
-          <button type="button" class="btn btn-default btn-sm twitterpopup twitter" style="padding:0; height:30px; width:34px;"><span></span></button>
-          </div>          
+          <button type="button" class="btn btn-default btn-sm twitterpopup twitter" title="Tweet this!" style="padding:0; height:30px; width:34px;"><span></span></button>
+          </div>   
+        </div>
+        <div class="col-md-8">      
+          <div id="player"></div>
+        </div>
+        </div> <!--row-->
+        <div class="row">
+          <div class="col-md-6">
+        <div class="text-block">
+        <h4>London to Brighton: <small>sync of a map marker to the time lapse of a journey</small></h4>
+        <p>by <a href="http://danbjoseph.github.io/">Dan Joseph</a> using <a href="http://leafletjs.com/">Leaflet</a> | <a href="https://github.com/openplans/Leaflet.AnimatedMarker">Leaflet Animated Marker plugin</a> | <a href="http://getbootstrap.com/">Bootstrap</a></p>
+        <p>Note: The marker syncs up to the start and end but is off at intermediate points so I'd like to improve this by chunking the path and calculating speed for each segment. I'd also like it to give you the name of each station being passed.</p>
+        
+        </div>
+      </div>
+      <div class="col-md-6">
+        <blockquote class="twitter-tweet"><p>Please someone connect an interactive map to this awesome timelapse of my old train journey <a href="http://t.co/60qgcV2KiD">http://t.co/60qgcV2KiD</a></p>&mdash; mikel (@mikel) <a href="https://twitter.com/mikel/statuses/373521165345509376">August 30, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </div>
+       
+      
+
+        </div> <!--row-->
+
+               
         
       </div>
 
