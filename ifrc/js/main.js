@@ -6,7 +6,9 @@ var categoryData = {};
 var categoryTotal = 0;
 var itemsCategory;
 var categoryList = ["Blankets", "MosquitoNet", "PlasticSleepingMat", "Jerry_10L", "Jerry_20L", "HygieneKit", "KitchenSet", "Tarpaulin","Tent","SRK"];
-
+var donorList = [];
+var donorButtons;
+var visibleDonors;
 
 function getDistributionData(){
   $.ajax({
@@ -17,7 +19,7 @@ function getDistributionData(){
       timeout: 10000,
       success: function(json) {
         prcDistributions = json;        
-        getDateRange();
+        getRanges();
       },
       error: function(e) {
           console.log(e);
@@ -26,26 +28,104 @@ function getDistributionData(){
 }
 
 
-function getDateRange(){
-  var allDates = [];
 
+function getRanges(){
+  var allDates = [];
   $(prcDistributions).each(function(i, distribution){
-    selected = distribution.DATE;
-    selectedDate = new Date(selected);
+    var selected = distribution.DATE;
+    var selectedDate = new Date(selected);
     allDates.push(selectedDate);
+    var donorName = distribution.DONOR;
+    if (donorList.indexOf(donorName) === -1){
+        donorList.push(donorName);
+    }; 
   });
   maxDate = new Date(Math.max.apply(null, allDates));
   minDate = new Date(Math.min.apply(null, allDates));
-  buildHistory();
+  buildDonorFilter();
 }
 
 //       if (isFinite(x) == true){
 //         y += x;
 //       };
 
+function buildDonorFilter(){
+  
+  var donorFilterHtml = '<button id="ALL-DONORS" class="btn btn-sm btn-donor filtering all" type="button" onclick="toggleDonorFilter('+"'ALL-DONORS'"+', this);"'+
+      ' style="margin-right:10px;">All<span class="glyphicon glyphicon-check" style="margin-left:4px;"></span></button>';
+  $.each(donorList, function(index, donor){
+    var itemHtml = '<button id="'+donor+'" class="btn btn-sm btn-donor" type="button" onclick="toggleDonorFilter('+"'"+donor+"'"+', this);">'+donor+
+        '<span class="glyphicon glyphicon-unchecked" style="margin-left:4px;"></span></button>';
+    donorFilterHtml += itemHtml;    
+  });
+  $('#donorButtons').html(donorFilterHtml);
+  donorButtons = $("#donorButtons").children();
+
+  buildHistory();
+
+}
+
+function toggleDonorFilter (filter, element) {
+  // check if filter is for all
+  if($(element).hasClass('all')){
+    $.each(donorButtons, function(i, button){
+      $(button).children().removeClass("glyphicon-check");
+      $(button).children().addClass("glyphicon-unchecked");
+      $(button).removeClass("filtering");
+    })
+    $(element).children().removeClass("glyphicon-unchecked"); 
+    $(element).children().addClass("glyphicon-check");
+    $(element).addClass("filtering");         
+  } else {
+      // clear the ALL filter for the filter category
+      var donorAllFilter = $('#donorButtons').find('.all');
+      $(donorAllFilter).children().addClass("glyphicon-unchecked");
+      $(donorAllFilter).children().removeClass("glyphicon-check");
+      $(donorAllFilter).removeClass("filtering");
+      
+      // if clicked sector filter is on, then turn it off
+      if($(element).hasClass("filtering") === true){
+        $(element).removeClass("filtering");
+        $(element).children().removeClass("glyphicon-check");
+        $(element).children().addClass("glyphicon-unchecked");
+          // if no sector filters are turned on, toggle 'All' back on
+          var noSectorFiltering = true;
+          $.each(donorButtons, function(i, button){
+            if ($(button).hasClass("filtering")){
+              noSectorFiltering = false;
+            }
+          });
+          if (noSectorFiltering === true){
+            $(donorAllFilter).children().removeClass("glyphicon-unchecked"); 
+            $(donorAllFilter).children().addClass("glyphicon-check");
+            $(donorAllFilter).addClass("filtering");     
+          }
+      // if clicked sector filter is off, then turn it on
+    } else {
+      $(element).addClass("filtering");
+      $(element).children().removeClass("glyphicon-unchecked");
+      $(element).children().addClass("glyphicon-check");                
+    }
+  }
+  buildHistory();
+}
+  
+
+
+
 
 function buildHistory (){
-	
+
+  //check to see what filters are active
+  visibleDonors = [];
+  $.each(donorButtons, function(i, button){
+    if($(button).hasClass("filtering")){
+      var buttonid = $(button).attr("id");
+      visibleDonors.push(buttonid);
+    }
+  });
+
+	chartData = [];
   $(categoryList).each(function(i, category){
     categoryTotal = 0;
     categoryData = {};
@@ -54,9 +134,12 @@ function buildHistory (){
     categoryData.values = [];
     for (var d = new Date(minDate); d <= maxDate; d.setDate(d.getDate() + 1)) {
       $(prcDistributions).each(function(i, distribution){
-        if((new Date(distribution.DATE)).getTime() == d.getTime()){
-          categoryTotal += distribution[itemsCategory];
-        }
+          var selectedDonor = distribution.DONOR;
+          if((new Date(distribution.DATE)).getTime() == d.getTime()){
+            if(visibleDonors.indexOf("ALL-DONORS") != -1 || visibleDonors.indexOf(selectedDonor) != -1 ){
+              categoryTotal += distribution[itemsCategory];
+            }           
+          }        
       });
       currentDate = new Date(d);
       categoryData.values.push([currentDate.getTime(), categoryTotal]);
@@ -67,6 +150,7 @@ function buildHistory (){
 }
 
 function buildChart(){
+  $('#chart1').empty();
     /*
   .map(function(series) {
     series.values = series.values.map(function(d) {

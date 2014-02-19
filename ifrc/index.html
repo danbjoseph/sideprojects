@@ -31,15 +31,30 @@
         height: 500px;
 
       }
-      #IFRC {
+      #logo-IFRC {
         height:30px;
         margin: 10px 25px 0 0;
         display: inline-block;
       }
-      #PRC {
+      #logo-PRC {
         height:45px;
         margin: 10px 25px 0 0;
         display: inline-block;
+      }
+      .btn-donor {
+        background-color: #C4DFF6;
+        margin-bottom: 5px;
+        margin-right: 3px;
+      }
+      .btn-donor:focus {
+        outline:0;
+        color: black;
+      }
+      .btn-donor:hover,
+      .btn-donor.filtering {
+        background-color: #56A0D3;  
+        outline: 0;
+        color:#f5f5f5; 
       }
 
 
@@ -54,10 +69,15 @@
         <h6>Exploring new ways of looking at data. Please send feedback or report any issues to <a href="mailto://daniel.joseph@redcross.org">Dan Joseph</a> or using <a href="https://github.com/danbjoseph/sideprojects/issues" target="_blank">GitHub</a>. Chart for demonstration purposes. Data may not be complete.</h6>
       </div>
       <div class="col-sm-6" style="text-align:right;">
-        <img id="IFRC" src="images/IFRC_logo_english.png">      
-        <img id ="PRC" src="images/prc_logo.png">
-      </div>
-      
+        <img id="logo-IFRC" src="images/IFRC_logo_english.png">      
+        <img id ="logo-PRC" src="images/prc_logo.png">
+      </div>      
+    </div>
+    <div class="row">
+      <p><h6>
+        <b>Donor Filters:</b>
+        <span  id="donorButtons" style="margin-left:10px;"></span>
+      </h6></p>
     </div>
     <hr>
 
